@@ -22,6 +22,9 @@
 
     <!-- for a local checkout and build of fsharp in CI -->
     <TargetPath Condition="Exists('..\fsharp\Build.cmd')">$(MSBuildThisFileDirectory)..\fsharp\artifacts\bin\FSharp.Compiler.Service\Debug\netstandard2.0\FSharp.Compiler.Service.dll</TargetPath>
+
+    <!-- for an existing checkout of fsharp, see FSHARP_REPO in build.fsx -->
+    <TargetPath Condition="'$(FSHARP_REPO)' != '' And Exists('$(FSHARP_REPO)/Build.cmd')">$(FSHARP_REPO)/artifacts/bin/FSharp.Compiler.Service/Debug/netstandard2.0/FSharp.Compiler.Service.dll</TargetPath>
   
   </PropertyGroup>
   <PropertyGroup>
