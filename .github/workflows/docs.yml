@@ -10,39 +10,17 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  FSHARP_DIR: fsharp
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Checkout fsharp main
-        uses: actions/checkout@v6
-        with:
-          repository: dotnet/fsharp
-          path: ${{ env.FSHARP_DIR }}
-          ref: main
-      - name: Setup .NET for FSharp
+      - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          global-json-file: ${{ env.FSHARP_DIR }}/global.json
-      - name: Restore tools
-        run: dotnet tool restore
-      - name: Restore FSharp.Compiler.Service.fsproj
-        run: dotnet restore FSharp.Compiler.Service/FSharp.Compiler.Service.fsproj
-      - name: Build FCS
-        run: dotnet build FSharp.Compiler.Service.sln
-        working-directory: ${{ env.FSHARP_DIR }}
-
-      - name: Run fsdocs
-        env:
-              # allow roll forward to latest major version - this would happen for us if we invoked the fsdocs tool instead of invoking the binary directly
-              DOTNET_ROLL_FORWARD: "LatestMajor"
-              # need previews because .NET 8 is what's being used at runtime
-              DOTNET_ROLL_FORWARD_TO_PRERELEASE: "1"
-        run: dotnet fsdocs build --eval --sourcefolder fsharp --input fsharp/docs
+          dotnet-version: 10.0.x
+      - name: Build docs
+        run: dotnet fsi build.fsx
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
