@@ -29,6 +29,12 @@ You need a .NET 10 SDK to run it. The default pipeline does the following:
 
 To pick up new upstream changes, delete the `fsharp` folder and run the pipeline again.
 
+To generate the docs from a dotnet/fsharp checkout you already have, for example a fork with
+docs changes in progress, point `FSHARP_REPO` at it. The clone step is skipped and that checkout
+is built and read in place:
+
+    FSHARP_REPO=~/Projects/fsharp dotnet fsi build.fsx
+
 Once a build has run, iterate on the docs with live reload:
 
     dotnet fsi build.fsx -- -p Watch
